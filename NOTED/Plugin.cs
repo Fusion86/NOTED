@@ -34,7 +34,7 @@ namespace NOTED
         public static IPluginLog Logger { get; private set; } = null!;
 
         public static string AssemblyLocation { get; private set; } = "";
-        public string Name => "NOTED";
+        public string Name => "Chen's NOTED";
 
         public static string Version { get; private set; } = "";
 
@@ -83,9 +83,10 @@ namespace NOTED
                 AssemblyLocation = Assembly.GetExecutingAssembly().Location;
             }
 
-            Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.3.0.0";
+            Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unk";
 
             UiBuilder.Draw += Draw;
+            // TODO: Could be changed to OpenMainUi
             UiBuilder.OpenConfigUi += OpenConfigUi;
             Framework.Update += Update;
 
@@ -137,7 +138,7 @@ namespace NOTED
 
         private void CreateWindows()
         {
-            _settingsWindow = new SettingsWindow("NOTED v" + Version);
+            _settingsWindow = new SettingsWindow("Chen's NOTED v" + Version);
             _jobsDataWindow = new JobsDataWindow("Jobs");
             _noteWindow = new NoteWindow("Note");
 

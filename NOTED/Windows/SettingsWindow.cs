@@ -56,10 +56,11 @@ namespace NOTED.Windows
 
             Flags = ImGuiWindowFlags.NoScrollbar
                 | ImGuiWindowFlags.NoCollapse
-                | ImGuiWindowFlags.NoResize
+                //| ImGuiWindowFlags.NoResize
                 | ImGuiWindowFlags.NoScrollWithMouse;
 
-            Size = new Vector2(740, 600);
+            // TODO: For some reason you can't set this just once.
+            //Size = new Vector2(740, 600);
         }
 
         public override void OnClose()
@@ -78,7 +79,7 @@ namespace NOTED.Windows
             // notes
             if (ImGui.BeginTabItem("Notes##NOTED_Notes"))
             {
-                Size = new Vector2(742, 606);
+                //Size = new Vector2(842, 606);
                 DrawNotesTab();
                 ImGui.EndTabItem();
             }
@@ -86,7 +87,7 @@ namespace NOTED.Windows
             // settings
             if (ImGui.BeginTabItem("Settings##NOTED_General"))
             {
-                Size = new Vector2(300, 300);
+                //Size = new Vector2(300, 300);
                 DrawSettingsTab();
                 ImGui.EndTabItem();
             }
@@ -94,7 +95,7 @@ namespace NOTED.Windows
             // keybinds
             if (ImGui.BeginTabItem("Keybinds##NOTED_Keybinds"))
             {
-                Size = new Vector2(300, 300);
+                //Size = new Vector2(300, 300);
                 DrawKeybindsTab();
                 ImGui.EndTabItem();
             }
@@ -159,9 +160,18 @@ namespace NOTED.Windows
         public void DrawNotesTab()
         {
             DrawButtons();
+
+            // TODO: Alternatively use table colums (TableGetColumnFlags etc)
+            ImGui.Columns(3);
+
             DrawDutyList();
+            ImGui.NextColumn();
+
             DrawNoteList();
+            ImGui.NextColumn();
+
             DrawNote();
+            ImGui.NextColumn();
 
             if (_addingNote)
             {
@@ -261,7 +271,7 @@ namespace NOTED.Windows
                     _newNoteTitle = "New Note";
                     _addingNote = true;
                     _needsFocusOnNewNote = true;
-                    
+
                     // set active duty automatically (if any)
                     DutyData? duty = _duties.FirstOrDefault(o => o.ID == Plugin.ClientState.TerritoryType);
                     if (duty != null)
@@ -295,7 +305,7 @@ namespace NOTED.Windows
             ImGui.EndChild();
 
             ImGui.SameLine();
-            ImGui.BeginChild("##Buttons2", new Vector2(568 * _scale, 39 * _scale), true);
+            ImGui.BeginChild("##Buttons2", new Vector2(0, 39 * _scale), true);
             {
                 if (SelectedDuty != null && SelectedNote != null)
                 {
@@ -400,7 +410,7 @@ namespace NOTED.Windows
 
         private void DrawDutyList()
         {
-            ImGui.BeginChild("##DutyList", new Vector2(150 * _scale, 498 * _scale), true);
+            ImGui.BeginChild("##DutyList", new Vector2(0, 0), false);
             {
                 foreach (Duty duty in Settings.Duties.Values)
                 {
@@ -427,9 +437,9 @@ namespace NOTED.Windows
 
         private void DrawNoteList()
         {
-            ImGui.SameLine();
+            //ImGui.SameLine();
 
-            ImGui.BeginChild("##NoteList", new Vector2(150 * _scale, 498 * _scale), true);
+            ImGui.BeginChild("##NoteList", new Vector2(0, 0), false);
             {
                 if (SelectedDuty != null)
                 {
@@ -470,13 +480,13 @@ namespace NOTED.Windows
 
         private void DrawNote()
         {
-            ImGui.SameLine();
+            //ImGui.SameLine();
 
-            ImGui.BeginChild("##Note", new Vector2(411 * _scale, 498 * _scale), true);
+            ImGui.BeginChild("##Note", new Vector2(0, 0), false);
             {
                 if (SelectedNote != null)
                 {
-                    ImGui.PushItemWidth(398 * _scale);
+                    ImGui.PushItemWidth(-1);
                     ImGui.InputText("##Title", ref SelectedNote.Title, 64);
 
                     if (NeedsFocus)
@@ -485,10 +495,10 @@ namespace NOTED.Windows
                         NeedsFocus = false;
                     }
                     ImGui.InputTextMultiline(
-                        "##Text", 
-                        ref SelectedNote.Text, 
-                        99999, 
-                        new Vector2(398 * _scale, 428 * _scale), 
+                        "##Text",
+                        ref SelectedNote.Text,
+                        99999,
+                        new Vector2(-1, -ImGui.GetFrameHeightWithSpacing()),
                         ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.AllowTabInput
                     );
 
