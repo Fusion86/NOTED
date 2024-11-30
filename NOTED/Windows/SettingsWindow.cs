@@ -412,7 +412,7 @@ namespace NOTED.Windows
         {
             ImGui.BeginChild("##DutyList", new Vector2(0, 0), false);
             {
-                foreach (Duty duty in Settings.Duties.Values)
+                foreach (Duty duty in Settings.Duties.Values.OrderBy(d => d.Name))
                 {
                     if (ImGui.Selectable(duty.Name, duty == SelectedDuty))
                     {
