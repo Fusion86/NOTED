@@ -83,7 +83,7 @@ namespace NOTED
                 AssemblyLocation = Assembly.GetExecutingAssembly().Location;
             }
 
-            Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unk";
+            Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.5.0.0";
 
             UiBuilder.Draw += Draw;
             // TODO: Could be changed to OpenMainUi
